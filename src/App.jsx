@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParticipants } from './hooks/useParticipants';
 import FileLoader from './components/FileLoader/FileLoader';
 import SlotMachine from './components/Slot/SlotMachine';
+import PizzaCloud from './components/PizzaCloud/PizzaCloud';
 
 export default function App() {
   const [tab, setTab] = useState('cloud');
@@ -26,7 +27,7 @@ export default function App() {
           Sorteo
         </button>
       </nav>
-      {tab === 'cloud' ? <p>Aquí irá la pizza con los nombres</p> : <SlotMachine />}
+      {tab === 'cloud' ? <PizzaCloud pizzaImage="/PizzaFoto.png" /> : <SlotMachine />}
     </main>
   );
 }

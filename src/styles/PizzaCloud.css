@@ -1,0 +1,104 @@
+.pizza-cloud-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  height: 620px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* --- PIZZA CENTRAL GIRATORIA --- */
+.pizza-center-wrapper {
+  position: relative;
+  z-index: 5;
+  width: 290px;
+  height: 290px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.spinning-pizza {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  /* Recorta el borde negro de la imagen cuadrada de la pizza */
+  clip-path: circle(47% at 50% 50%);
+  animation: spinPizza 35s linear infinite;
+  user-select: none;
+  pointer-events: none;
+}
+
+@keyframes spinPizza {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- CAPA DE BURBUJAS FLOTANTES --- */
+.bubbles-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.user-bubble {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1f4e28; /* Verde oscuro del diseño actual */
+  border: 1.5px solid rgba(31, 78, 40, 0.25);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  animation: bubblePulse 2.8s ease-in-out infinite alternate, bubbleFadeIn 0.6s ease-out;
+}
+
+/* Animación de entrada suave cuando se releva un usuario */
+@keyframes bubbleFadeIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+/* Efecto de flotación suave */
+@keyframes bubblePulse {
+  0% {
+    margin-top: -5px;
+  }
+  100% {
+    margin-top: 5px;
+  }
+}
+
+/* Responsivo para celulares */
+@media (max-width: 768px) {
+  .pizza-cloud-stage {
+    height: 480px;
+  }
+  .pizza-center-wrapper {
+    width: 190px;
+    height: 190px;
+  }
+  .user-bubble {
+    font-size: 0.72rem;
+    padding: 3px 9px;
+  }
+}
