@@ -27,24 +27,9 @@ export default function App() {
 
   return (
     <main>
-      {/* LOGO DEL CLIENTE */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-        <img
-          src="/logo.png" 
-          alt="Logo"
-          style={{
-            maxWidth: '180px',
-            maxHeight: '110px',
-            objectFit: 'contain',
-            filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.12))'
-          }}
-        />
-      </div>
-
-      {/* TÍTULO DE PARTICIPANTES */}
       <h1 
         onDoubleClick={() => setShowAdmin((prev) => !prev)} 
-        style={{ cursor: 'pointer', userSelect: 'none', marginTop: '0' }}
+        style={{ cursor: 'pointer', userSelect: 'none' }}
         title="Doble clic o presiona 'L' para cargar archivos"
       >
         {participants.length.toLocaleString('es-CL')} participantes
