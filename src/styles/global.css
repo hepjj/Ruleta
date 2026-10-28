@@ -86,3 +86,136 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
+.aviso {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.2rem 0.9rem;
+  color: var(--rojo);
+  border: 2px solid var(--rojo);
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.loader {
+  margin-bottom: 1.5rem;
+}
+
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Tragamonedas */
+.slot {
+  display: grid;
+  justify-items: center;
+  gap: 1.5rem;
+  padding: 0 1rem 3rem;
+}
+
+.reel {
+  position: relative;
+  width: min(92vw, 560px);
+  overflow: hidden;
+  background: var(--verde-hondo);
+  border: 6px solid var(--verde);
+  border-radius: 16px;
+}
+
+/* Desvanece las filas de arriba y abajo para destacar la del centro */
+.reel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    var(--verde-hondo) 0%,
+    transparent 30%,
+    transparent 70%,
+    var(--verde-hondo) 100%
+  );
+}
+
+.reel-strip { will-change: transform; }
+
+.reel-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 4.8vw, 2rem);
+  font-weight: 700;
+  color: var(--crema);
+}
+
+.reel-marker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-block: 3px solid var(--crema);
+  pointer-events: none;
+  transition: background 0.3s;
+}
+
+.reel-marker::before,
+.reel-marker::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  border: 10px solid transparent;
+}
+
+.reel-marker::before { left: 0; border-left-color: var(--rojo); border-right-width: 0; }
+.reel-marker::after { right: 0; border-right-color: var(--rojo); border-left-width: 0; }
+
+.reel.is-winner .reel-marker { background: rgba(184, 49, 42, 0.4); }
+
+.winner { min-height: 8rem; }
+
+.winner h2 {
+  margin: 0 0 0.25rem;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--verde);
+}
+
+.winner-name {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 700;
+  color: var(--rojo);
+  overflow-wrap: anywhere;
+}
+
+.winner p:last-child { margin: 0.25rem 0 0; }
+
+.history {
+  width: min(92vw, 560px);
+  text-align: left;
+}
+
+.history h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--serif);
+  font-size: 1.3rem;
+}
+
+.history ol { margin: 0; padding-left: 1.5rem; }
+
+.history li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--crema-oscuro);
+}
+
+.history li span {
+  margin-left: 0.6rem;
+  color: var(--verde);
+}
