@@ -1,0 +1,88 @@
+:root {
+  --crema: #F4ECDB;
+  --crema-oscuro: #E3D6BA;
+  --verde: #2F6B3F;
+  --verde-hondo: #1F4A2C;
+  --rojo: #B8312A;
+  --tinta: #1E2420;
+  --radio: 10px;
+  --serif: 'Times New Roman', Times, serif;
+  --sans: Arial, Helvetica, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--crema);
+  background-image: url('/fondo-pizza.svg');
+  background-size: 220px;
+  color: var(--tinta);
+  font-family: var(--sans);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Franja tricolor */
+body::before {
+  content: '';
+  display: block;
+  height: 8px;
+  background: linear-gradient(
+    to right,
+    var(--verde) 0 33.33%,
+    #FBF8F0 33.33% 66.66%,
+    var(--rojo) 66.66% 100%
+  );
+}
+
+h1 {
+  margin: 2rem 1rem 1.2rem;
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+nav {
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+button {
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--radio);
+  padding: 0.65rem 1.5rem;
+}
+
+.tab {
+  color: var(--verde);
+  background: transparent;
+  border: 2px solid var(--verde);
+}
+
+.tab.is-active {
+  color: var(--crema);
+  background: var(--verde);
+}
+
+.btn-primary {
+  color: var(--crema);
+  background: var(--rojo);
+  border: 2px solid var(--rojo);
+  font-size: 1.15rem;
+  padding: 0.8rem 2.4rem;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--tinta);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
