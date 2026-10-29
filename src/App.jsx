@@ -27,9 +27,22 @@ export default function App() {
 
   return (
     <main>
+      <img
+        src="/LogoPrincipal.jpeg"
+        alt="El Chiquillo de las Pizzas"
+        style={{
+          width: '200px',
+          display: 'block',
+          margin: '0 auto 4px',
+          mixBlendMode: 'multiply',
+          filter: 'contrast(120%) brightness(105%)'
+        }}
+      />
+
+
       <h1 
         onDoubleClick={() => setShowAdmin((prev) => !prev)} 
-        style={{ cursor: 'pointer', userSelect: 'none' }}
+        style={{ cursor: 'pointer', userSelect: 'none', marginTop: 0 }}
         title="Doble clic o presiona 'L' para cargar archivos"
       >
         {participants.length.toLocaleString('es-CL')} participantes
