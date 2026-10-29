@@ -73,4 +73,5 @@ export default function App() {
       {tab === 'cloud' ? <PizzaCloud pizzaImage="/PizzaFoto.png" /> : <SlotMachine />}
     </main>
   );
+  
 }
