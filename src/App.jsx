@@ -7,7 +7,8 @@ import PizzaCloud from './components/PizzaCloud/PizzaCloud';
 export default function App() {
   const [tab, setTab] = useState('cloud');
   const [showAdmin, setShowAdmin] = useState(false);
-  const { participants, usingMock } = useParticipants();
+  const { participants } = useParticipants();
+  const isEmpty = participants.length === 0;
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -20,10 +21,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!usingMock) {
+    // Al cargar participantes, se cierra el panel de carga
+    if (!isEmpty) {
       setShowAdmin(false);
     }
-  }, [usingMock]);
+  }, [isEmpty]);
 
   return (
     <main>
@@ -39,39 +41,42 @@ export default function App() {
         }}
       />
 
-
-      <h1 
-        onDoubleClick={() => setShowAdmin((prev) => !prev)} 
+      <h1
+        onDoubleClick={() => setShowAdmin((prev) => !prev)}
         style={{ cursor: 'pointer', userSelect: 'none', marginTop: 0 }}
         title="Doble clic o presiona 'L' para cargar archivos"
       >
-        {participants.length.toLocaleString('es-CL')} participantes
+        {isEmpty
+          ? 'Comenzando Sorteo ¡Perseverar es Ganar!'
+          : `${participants.length.toLocaleString('es-CL')} participantes`}
       </h1>
 
       {showAdmin && (
         <div style={{ marginBottom: '15px' }}>
-          {usingMock && <p className="aviso">Datos de prueba</p>}
           <FileLoader />
         </div>
       )}
 
-      <nav>
-        <button
-          className={`tab ${tab === 'cloud' ? 'is-active' : ''}`}
-          onClick={() => setTab('cloud')}
-        >
-          Participantes
-        </button>
-        <button
-          className={`tab ${tab === 'draw' ? 'is-active' : ''}`}
-          onClick={() => setTab('draw')}
-        >
-          Sorteo
-        </button>
-      </nav>
+      {!isEmpty && (
+        <>
+          <nav>
+            <button
+              className={`tab ${tab === 'cloud' ? 'is-active' : ''}`}
+              onClick={() => setTab('cloud')}
+            >
+              Participantes
+            </button>
+            <button
+              className={`tab ${tab === 'draw' ? 'is-active' : ''}`}
+              onClick={() => setTab('draw')}
+            >
+              Sorteo
+            </button>
+          </nav>
 
-      {tab === 'cloud' ? <PizzaCloud pizzaImage="/PizzaFoto.png" /> : <SlotMachine />}
+          {tab === 'cloud' ? <PizzaCloud pizzaImage="/PizzaFoto.png" /> : <SlotMachine />}
+        </>
+      )}
     </main>
   );
-  
 }

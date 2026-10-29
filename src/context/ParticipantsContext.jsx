@@ -1,26 +1,20 @@
 import { createContext, useCallback, useMemo, useState } from 'react';
-import { generateMock } from '../data/mockParticipants';
 import { dedupe } from '../lib/dedupe';
 
 export const ParticipantsContext = createContext(null);
 
 export function ParticipantsProvider({ children }) {
-  const [participants, setParticipants] = useState(() => generateMock());
-  const [usingMock, setUsingMock] = useState(true);
+  // Empieza vacío: los participantes solo vienen de los archivos que se carguen
+  const [participants, setParticipants] = useState([]);
   const [winners, setWinners] = useState([]);
 
-  const addParticipants = useCallback(
-    (list) => {
-      setParticipants((prev) => dedupe(usingMock ? list : [...prev, ...list]));
-      if (usingMock) setWinners([]);
-      setUsingMock(false);
-    },
-    [usingMock]
-  );
+  const addParticipants = useCallback((list) => {
+    setParticipants((prev) => dedupe([...prev, ...list]));
+  }, []);
 
   const value = useMemo(
-    () => ({ participants, usingMock, addParticipants, winners, setWinners }),
-    [participants, usingMock, addParticipants, winners]
+    () => ({ participants, addParticipants, winners, setWinners }),
+    [participants, addParticipants, winners]
   );
 
   return (
