@@ -1,44 +1,42 @@
-export function parseTikTok(data) {
-  const results = [];
+// Acepta dos formatos de TikTok:
+//  1) El export completo (user_data_tiktok.json): la lista está en
+//     "Profile And Settings" -> "Follower" -> "FansList"
+//  2) Un archivo ya recortado: una lista directa [{ UserName, Date }, ...]
 
-  // Ruta 1: Estructura estándar en inglés (Activity -> Follower List -> FansList)
-  const fansList =
+const isFan = (el) => el && typeof el === 'object' && 'UserName' in el;
+
+function toParticipants(list) {
+  const out = [];
+  for (const item of list) {
+    const raw = item?.UserName ?? item?.username;
+    if (!raw || raw === 'N/A') continue;
+    // OJO: la clave debe ser "user" (igual que Instagram), no "username"
+    out.push({ user: String(raw).replace(/^@/, ''), platform: 'tiktok' });
+  }
+  return out;
+}
+
+export function parseTikTok(data) {
+  // Formato recortado: lista directa
+  if (Array.isArray(data)) return toParticipants(data.filter(isFan));
+
+  // Export completo: rutas conocidas
+  const known =
+    data?.['Profile And Settings']?.Follower?.FansList ||
     data?.Activity?.['Follower List']?.FansList ||
-    data?.[' Your Activity']?.['Follower List']?.FansList ||
+    data?.['Your Activity']?.['Follower List']?.FansList ||
     data?.Profile?.['Follower List']?.FansList ||
     data?.Follower?.FansList;
+  if (Array.isArray(known)) return toParticipants(known);
 
-  if (Array.isArray(fansList)) {
-    for (const item of fansList) {
-      const username = item?.UserName || item?.username;
-      if (username && username !== 'N/A') {
-        results.push({ username: String(username).replace(/^@/, ''), platform: 'tiktok' });
-      }
-    }
-    return results;
-  }
+  // Plan B: búsqueda recursiva de una lista "FansList"
+  // (no usamos cualquier lista con UserName porque Block List y Following también la tienen)
+  let found = null;
+  (function walk(obj) {
+    if (found || !obj || typeof obj !== 'object') return;
+    if (Array.isArray(obj.FansList)) { found = obj.FansList; return; }
+    for (const k of Object.keys(obj)) walk(obj[k]);
+  })(data);
 
-  // Ruta 2: Búsqueda profunda automática (por si TikTok exporta las llaves en español u otro formato)
-  function searchFans(obj) {
-    if (!obj || typeof obj !== 'object') return;
-    if (Array.isArray(obj)) {
-      for (const el of obj) {
-        if (el && typeof el === 'object' && ('UserName' in el) && ('Date' in el)) {
-          const u = el.UserName;
-          if (u && u !== 'N/A') {
-            results.push({ username: String(u).replace(/^@/, ''), platform: 'tiktok' });
-          }
-        } else {
-          searchFans(el);
-        }
-      }
-      return;
-    }
-    for (const key of Object.keys(obj)) {
-      searchFans(obj[key]);
-    }
-  }
-
-  searchFans(data);
-  return results;
+  return found ? toParticipants(found) : [];
 }
